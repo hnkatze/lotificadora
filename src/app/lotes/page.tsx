@@ -1,3 +1,4 @@
+'use client'
 import { motion } from "framer-motion"
 import Layout from "../../components/layout"
 import { CheckCircle, TreePine, Shield, Zap, Droplets } from "lucide-react"
