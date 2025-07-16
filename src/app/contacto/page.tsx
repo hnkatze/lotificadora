@@ -1,4 +1,5 @@
 'use client'
+// export { metadata } from "./metadata"
 import type React from "react"
 
 import { motion } from "framer-motion"
@@ -112,8 +113,9 @@ export default function ContactoPage() {
 
       {/* Contact Form & Info */}
       <motion.section
-        initial={prefersReducedMotion ? undefined : "initial"}
-        animate={prefersReducedMotion ? undefined : "animate"}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20"
       >
@@ -277,8 +279,8 @@ export default function ContactoPage() {
 
       {/* Map Section */}
       <motion.section
-        initial={prefersReducedMotion ? undefined : "initial"}
-        whileInView={prefersReducedMotion ? undefined : "animate"}
+        initial="initial"
+        whileInView="animate"
         viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20 bg-gray-50"
@@ -300,8 +302,8 @@ export default function ContactoPage() {
 
       {/* FAQ Quick Access */}
       <motion.section
-        initial={prefersReducedMotion ? undefined : "initial"}
-        whileInView={prefersReducedMotion ? undefined : "animate"}
+        initial="initial"
+        whileInView="animate"
         viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20"
@@ -323,8 +325,8 @@ export default function ContactoPage() {
 
       {/* Emergency Contact */}
       <motion.section
-        initial={prefersReducedMotion ? undefined : "initial"}
-        whileInView={prefersReducedMotion ? undefined : "animate"}
+        initial="initial"
+        whileInView="animate"
         viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20 bg-emerald-600"
