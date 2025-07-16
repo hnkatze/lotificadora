@@ -6,6 +6,12 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Home, MessageCircle, Menu, X } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import dynamic from "next/dynamic"
+
+const WhatsAppButton = dynamic(() => import("./WhatsAppButton"), {
+  ssr: false,
+  loading: () => null,
+})
 
 interface LayoutProps {
   children: React.ReactNode
@@ -50,6 +56,14 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Skip to main content link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-emerald-600 text-white px-4 py-2 rounded-md z-50"
+      >
+        Saltar al contenido principal
+      </a>
+      
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -50 }}
@@ -86,6 +100,14 @@ export default function Layout({ children }: LayoutProps) {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              const contactSection = document.getElementById('contacto')
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' })
+              } else {
+                window.location.href = '/contacto'
+              }
+            }}
             className="hidden lg:block bg-emerald-600 text-white px-6 py-2 rounded-full hover:bg-emerald-700 transition-colors font-medium"
           >
             Agendar Visita
@@ -96,7 +118,8 @@ export default function Layout({ children }: LayoutProps) {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden z-[10000] relative p-3 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition-colors shadow-lg"
+            className="lg:hidden z-50 relative p-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors shadow-lg"
+            aria-label={isMenuOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación"}
           >
             <AnimatePresence mode="wait">
               {isMenuOpen ? (
@@ -124,41 +147,53 @@ export default function Layout({ children }: LayoutProps) {
             </AnimatePresence>
           </motion.button>
         </div>
+      </motion.header>
 
-        {/* Mobile Menu Overlay */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998] lg:hidden"
-                onClick={closeMenu}
-              />
+      {/* Mobile Menu Overlay - Outside of header */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+              onClick={closeMenu}
+            />
 
               {/* Mobile Menu */}
               <motion.div
-                initial={{ x: "100%", opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: "100%", opacity: 0 }}
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-[9999] lg:hidden"
+                className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 lg:hidden overflow-hidden"
               >
-                <div className="flex flex-col h-full bg-white">
-                  {/* Menu Header */}
-                  <div className="p-6 border-b border-gray-100 bg-white">
-                    <div className="flex items-center space-x-2">
-                      <Home className="h-6 w-6 text-emerald-600" />
-                      <span className="text-xl font-bold text-gray-800">Valle Sereno</span>
+                <div className="flex flex-col h-full overflow-hidden">
+                  {/* Menu Header with Close Button */}
+                  <div className="p-6 border-b border-gray-100">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="flex items-center space-x-2">
+                          <Home className="h-6 w-6 text-emerald-600" />
+                          <span className="text-xl font-bold text-gray-800">Valle Sereno</span>
+                        </div>
+                        <p className="text-gray-600 text-sm mt-2">Tu futuro comienza aquí</p>
+                      </div>
+                      <button
+                        onClick={closeMenu}
+                        className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                        aria-label="Cerrar menú"
+                      >
+                        <X className="h-6 w-6 text-gray-600" />
+                      </button>
                     </div>
-                    <p className="text-gray-600 text-sm mt-2">Tu futuro comienza aquí</p>
                   </div>
 
                   {/* Navigation Links */}
-                  <nav className="flex-1 px-6 py-8 bg-white">
+                  <nav className="flex-1 px-6 py-8 overflow-y-auto">
                     <ul className="space-y-6">
                       {navItems.map((item, index) => (
                         <motion.li
@@ -183,10 +218,18 @@ export default function Layout({ children }: LayoutProps) {
                         initial={{ x: 50, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: (navItems.length + 1) * 0.1, duration: 0.3 }}
-                        className="pt-4 border-t border-gray-100 bg-white"
+                        className="pt-4 border-t border-gray-100"
                       >
                         <motion.button
-                          onClick={closeMenu}
+                          onClick={() => {
+                            closeMenu()
+                            const contactSection = document.getElementById('contacto')
+                            if (contactSection) {
+                              contactSection.scrollIntoView({ behavior: 'smooth' })
+                            } else {
+                              window.location.href = '/contacto'
+                            }
+                          }}
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           className="w-full bg-emerald-600 text-white py-3 px-4 rounded-full hover:bg-emerald-700 transition-colors font-medium text-center"
@@ -198,7 +241,7 @@ export default function Layout({ children }: LayoutProps) {
                   </nav>
 
                   {/* Menu Footer */}
-                  <div className="p-6 border-t border-gray-100 bg-white">
+                  <div className="p-6 border-t border-gray-100 bg-gray-50">
                     <motion.div
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
@@ -206,7 +249,13 @@ export default function Layout({ children }: LayoutProps) {
                       className="text-center"
                     >
                       <p className="text-gray-600 text-sm mb-3">¿Necesitas ayuda inmediata?</p>
-                      <button className="flex items-center justify-center space-x-2 text-green-600 hover:text-green-700 transition-colors mx-auto">
+                      <button 
+                        onClick={() => {
+                          const url = `https://wa.me/50412345678?text=${encodeURIComponent("Hola, me interesa obtener más información sobre los lotes en Valle Sereno")}`
+                          window.open(url, '_blank', 'noopener,noreferrer')
+                          closeMenu()
+                        }}
+                        className="flex items-center justify-center space-x-2 text-green-600 hover:text-green-700 transition-colors mx-auto">
                         <MessageCircle className="h-4 w-4" />
                         <span className="text-sm font-medium">Contactar por WhatsApp</span>
                       </button>
@@ -217,10 +266,9 @@ export default function Layout({ children }: LayoutProps) {
             </>
           )}
         </AnimatePresence>
-      </motion.header>
 
       {/* Main Content */}
-      <main className="pt-20">{children}</main>
+      <main id="main-content" className="pt-20">{children}</main>
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-12">
@@ -283,20 +331,7 @@ export default function Layout({ children }: LayoutProps) {
       </footer>
 
       {/* WhatsApp Float Button */}
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 1 }}
-        className="fixed bottom-6 right-6 z-50"
-      >
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-colors"
-        >
-          <MessageCircle className="h-6 w-6" />
-        </motion.button>
-      </motion.div>
+      <WhatsAppButton />
     </div>
   )
 }

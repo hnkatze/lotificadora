@@ -3,24 +3,13 @@ import { motion } from "framer-motion"
 import Layout from "../../components/layout"
 import { CheckCircle, TreePine, Shield, Zap, Droplets } from "lucide-react"
 import { useState } from "react"
+import { fadeInUp, staggerContainer } from "@/lib/animations"
+import { useReducedMotion } from "@/hooks/useReducedMotion"
 
 export default function LotesPage() {
   const [selectedLote, setSelectedLote] = useState("250")
   const [paymentPlan, setPaymentPlan] = useState("financiado")
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 },
-  }
-
-  const staggerContainer = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
+  const prefersReducedMotion = useReducedMotion()
 
   const lotes = [
     {
@@ -83,9 +72,9 @@ export default function LotesPage() {
         ></div>
 
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 50 }}
+          animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          transition={prefersReducedMotion ? { duration: 0.01 } : { duration: 0.8 }}
           className="relative z-20 text-center text-white max-w-4xl mx-auto px-4"
         >
           <h1 className="text-5xl md:text-6xl font-bold mb-4">Lotes Disponibles</h1>
@@ -95,14 +84,13 @@ export default function LotesPage() {
 
       {/* Lotes Grid */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-        variants={staggerContainer}
+        initial={prefersReducedMotion ? undefined : "initial"}
+        animate={prefersReducedMotion ? undefined : "animate"}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Elige tu Lote Ideal</h2>
             <p className="text-xl text-gray-600">Diferentes tamaños y ubicaciones para adaptarse a tus necesidades</p>
           </motion.div>
@@ -111,8 +99,8 @@ export default function LotesPage() {
             {lotes.map((lote, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
-                whileHover={{ y: -10 }}
+                variants={prefersReducedMotion ? undefined : fadeInUp}
+                whileHover={prefersReducedMotion ? undefined : { y: -10 }}
                 className={`relative bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 ${
                   lote.popular ? "ring-2 ring-emerald-500" : ""
                 }`}
@@ -151,16 +139,16 @@ export default function LotesPage() {
 
                   <div className="space-y-3">
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                      whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
                       onClick={() => setSelectedLote(lote.id)}
                       className="w-full bg-emerald-600 text-white py-3 rounded-full font-semibold hover:bg-emerald-700 transition-colors"
                     >
                       Ver Detalles
                     </motion.button>
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                      whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
                       className="w-full border-2 border-emerald-600 text-emerald-600 py-3 rounded-full font-semibold hover:bg-emerald-50 transition-colors"
                     >
                       Agendar Visita
@@ -175,19 +163,19 @@ export default function LotesPage() {
 
       {/* Payment Calculator */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
-        variants={staggerContainer}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20 bg-gray-50"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Calculadora de Pagos</h2>
             <p className="text-xl text-gray-600">Descubre cuánto pagarías según tu plan preferido</p>
           </motion.div>
 
-          <motion.div variants={fadeInUp} className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8">
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">Configuración</h3>
@@ -284,8 +272,8 @@ export default function LotesPage() {
                     </div>
 
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                      whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
                       className="w-full bg-emerald-600 text-white py-3 rounded-full font-semibold hover:bg-emerald-700 transition-colors mt-6"
                     >
                       Solicitar Cotización
@@ -300,21 +288,21 @@ export default function LotesPage() {
 
       {/* Included Services */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
-        variants={staggerContainer}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Servicios Incluidos</h2>
             <p className="text-xl text-gray-600">Todo lo que necesitas está incluido en el precio</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {includedServices.map((service, index) => (
-              <motion.div key={index} variants={fadeInUp} className="text-center bg-white p-6 rounded-2xl shadow-lg">
+              <motion.div key={index} variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center bg-white p-6 rounded-2xl shadow-lg">
                 <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   <service.icon className="h-8 w-8 text-emerald-600" />
                 </div>
@@ -328,14 +316,14 @@ export default function LotesPage() {
 
       {/* CTA Section */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
-        variants={staggerContainer}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20 bg-emerald-600"
       >
         <div className="container mx-auto px-4 text-center">
-          <motion.div variants={fadeInUp}>
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
             <h2 className="text-4xl font-bold text-white mb-6">¿Encontraste tu lote ideal?</h2>
             <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
               No esperes más, los mejores lotes se agotan rápido. Reserva el tuyo hoy mismo.

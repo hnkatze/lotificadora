@@ -1,5 +1,6 @@
 'use client'
 import { motion } from "framer-motion"
+import dynamic from "next/dynamic"
 import {
   MapPin,
   Shield,
@@ -12,7 +13,6 @@ import {
   Mail,
   MessageCircle,
   ChevronDown,
-  Star,
   CheckCircle,
   Calculator,
   FileText,
@@ -21,25 +21,24 @@ import {
   Clock,
   DollarSign,
 } from "lucide-react"
-import { useState } from "react"
 import Layout from "../components/layout"
+import OptimizedImage from "../components/OptimizedImage"
+import { fadeInUp, staggerContainer } from "@/lib/animations"
+import { useReducedMotion } from "@/hooks/useReducedMotion"
+
+// Lazy load heavy sections
+const TestimoniosSection = dynamic(() => import("@/components/TestimoniosSection"), {
+  loading: () => <div className="h-96 bg-gray-100 animate-pulse" />,
+  ssr: false,
+})
+
+const FAQSection = dynamic(() => import("@/components/FAQSection"), {
+  loading: () => <div className="h-96 bg-gray-50 animate-pulse" />,
+  ssr: false,
+})
 
 export default function ResidencialLanding() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 },
-  }
-
-  const staggerContainer = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
+  const prefersReducedMotion = useReducedMotion()
 
   const lotes = [
     {
@@ -71,42 +70,6 @@ export default function ResidencialLanding() {
     { icon: Zap, title: "Energía Eléctrica", desc: "Instalación subterránea" },
   ]
 
-  const testimonios = [
-    {
-      name: "Roberto Martínez",
-      role: "Ingeniero",
-      text: "Compré mi lote en 2023 y ya incrementó 30% su valor. La mejor inversión para mi familia.",
-      rating: 5,
-    },
-    {
-      name: "Ana García",
-      role: "Arquitecta",
-      text: "La ubicación es perfecta, cerca de todo pero con la tranquilidad que buscaba para mis hijos.",
-      rating: 5,
-    },
-    {
-      name: "Carlos López",
-      role: "Empresario",
-      text: "El proceso de compra fue transparente y rápido. Excelente atención al cliente.",
-      rating: 5,
-    },
-  ]
-
-  const faqs = [
-    {
-      q: "¿Cuánto tiempo toma la escrituración?",
-      a: "El proceso de escrituración toma entre 30 a 45 días hábiles una vez completado el pago.",
-    },
-    {
-      q: "¿Puedo construir cualquier estilo de casa?",
-      a: "Sí, respetando las normas de construcción y el reglamento interno del residencial.",
-    },
-    { q: "¿Hay restricciones de altura?", a: "La altura máxima permitida es de 3 niveles o 12 metros de altura." },
-    {
-      q: "¿Incluyen estudios topográficos?",
-      a: "Sí, todos los lotes incluyen levantamiento topográfico y certificado de linderos.",
-    },
-  ]
 
   return (
     <Layout>
@@ -114,12 +77,16 @@ export default function ResidencialLanding() {
         {/* Hero Section */}
         <section id="inicio" className="relative h-screen flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/80 to-emerald-700/60 z-10"></div>
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: "url(/placeholder.svg?height=1080&width=1920)",
-            }}
-          ></div>
+          <div className="absolute inset-0">
+            <OptimizedImage
+              src="/images/hero-landscape.jpg"
+              alt="Vista aérea del desarrollo residencial Valle Sereno"
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 100 }}
@@ -177,15 +144,15 @@ export default function ResidencialLanding() {
 
         {/* Introducción al Proyecto */}
         <motion.section
-          initial="initial"
-          whileInView="animate"
+          initial={prefersReducedMotion ? undefined : "initial"}
+          whileInView={prefersReducedMotion ? undefined : "animate"}
           viewport={{ once: true }}
-          variants={staggerContainer}
+          variants={prefersReducedMotion ? undefined : staggerContainer}
           id="proyecto"
           className="py-20 bg-gray-50"
         >
           <div className="container mx-auto px-4">
-            <motion.div variants={fadeInUp} className="text-center mb-16">
+            <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Un espacio diseñado para familias</h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 Que buscan tranquilidad, naturaleza y crecimiento patrimonial en un entorno seguro y moderno
@@ -208,7 +175,7 @@ export default function ResidencialLanding() {
               ].map((item, index) => (
                 <motion.div
                   key={index}
-                  variants={fadeInUp}
+                  variants={prefersReducedMotion ? undefined : fadeInUp}
                   className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
                 >
                   <item.icon className="h-12 w-12 text-emerald-600 mb-4" />
@@ -222,15 +189,15 @@ export default function ResidencialLanding() {
 
         {/* Ubicación */}
         <motion.section
-          initial="initial"
-          whileInView="animate"
+          initial={prefersReducedMotion ? undefined : "initial"}
+          whileInView={prefersReducedMotion ? undefined : "animate"}
           viewport={{ once: true }}
-          variants={staggerContainer}
+          variants={prefersReducedMotion ? undefined : staggerContainer}
           id="ubicacion"
           className="py-20"
         >
           <div className="container mx-auto px-4">
-            <motion.div variants={fadeInUp} className="text-center mb-16">
+            <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Ubicación Privilegiada</h2>
               <p className="text-xl text-gray-600">
                 A 10 minutos del centro urbano, con acceso directo a carretera principal
@@ -238,13 +205,17 @@ export default function ResidencialLanding() {
             </motion.div>
 
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <motion.div variants={fadeInUp}>
-                <div className="bg-gray-200 rounded-2xl h-96 flex items-center justify-center">
-                  <MapPin className="h-16 w-16 text-emerald-600" />
-                </div>
+              <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="relative h-96 rounded-2xl overflow-hidden">
+                <OptimizedImage
+                  src="/images/aerial-view.jpg"
+                  alt="Vista aérea de la ubicación del desarrollo"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
               </motion.div>
 
-              <motion.div variants={fadeInUp} className="space-y-6">
+              <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <div className="bg-emerald-100 p-3 rounded-full">
                     <MapPin className="h-6 w-6 text-emerald-600" />
@@ -281,15 +252,15 @@ export default function ResidencialLanding() {
 
         {/* Tipos de Lotes */}
         <motion.section
-          initial="initial"
-          whileInView="animate"
+          initial={prefersReducedMotion ? undefined : "initial"}
+          whileInView={prefersReducedMotion ? undefined : "animate"}
           viewport={{ once: true }}
-          variants={staggerContainer}
+          variants={prefersReducedMotion ? undefined : staggerContainer}
           id="lotes"
           className="py-20 bg-gray-50"
         >
           <div className="container mx-auto px-4">
-            <motion.div variants={fadeInUp} className="text-center mb-16">
+            <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Lotes Disponibles</h2>
               <p className="text-xl text-gray-600">Diferentes tamaños para adaptarse a tus necesidades y presupuesto</p>
             </motion.div>
@@ -298,7 +269,7 @@ export default function ResidencialLanding() {
               {lotes.map((lote, index) => (
                 <motion.div
                   key={index}
-                  variants={fadeInUp}
+                  variants={prefersReducedMotion ? undefined : fadeInUp}
                   whileHover={{ y: -10 }}
                   className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
                 >
@@ -335,15 +306,15 @@ export default function ResidencialLanding() {
 
         {/* Amenidades */}
         <motion.section
-          initial="initial"
-          whileInView="animate"
+          initial={prefersReducedMotion ? undefined : "initial"}
+          whileInView={prefersReducedMotion ? undefined : "animate"}
           viewport={{ once: true }}
-          variants={staggerContainer}
+          variants={prefersReducedMotion ? undefined : staggerContainer}
           id="amenidades"
           className="py-20"
         >
           <div className="container mx-auto px-4">
-            <motion.div variants={fadeInUp} className="text-center mb-16">
+            <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Amenidades y Servicios</h2>
               <p className="text-xl text-gray-600">Todo lo que necesitas para vivir cómodamente</p>
             </motion.div>
@@ -352,7 +323,7 @@ export default function ResidencialLanding() {
               {amenidades.map((amenidad, index) => (
                 <motion.div
                   key={index}
-                  variants={fadeInUp}
+                  variants={prefersReducedMotion ? undefined : fadeInUp}
                   whileHover={{ scale: 1.05 }}
                   className="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition-all duration-300"
                 >
@@ -369,14 +340,14 @@ export default function ResidencialLanding() {
 
         {/* Proceso de Compra */}
         <motion.section
-          initial="initial"
-          whileInView="animate"
+          initial={prefersReducedMotion ? undefined : "initial"}
+          whileInView={prefersReducedMotion ? undefined : "animate"}
           viewport={{ once: true }}
-          variants={staggerContainer}
+          variants={prefersReducedMotion ? undefined : staggerContainer}
           className="py-20 bg-gray-50"
         >
           <div className="container mx-auto px-4">
-            <motion.div variants={fadeInUp} className="text-center mb-16">
+            <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Proceso de Compra Simplificado</h2>
               <p className="text-xl text-gray-600">En solo 3 pasos puedes ser propietario de tu lote</p>
             </motion.div>
@@ -389,7 +360,7 @@ export default function ResidencialLanding() {
               ].map((item, index) => (
                 <motion.div
                   key={index}
-                  variants={fadeInUp}
+                  variants={prefersReducedMotion ? undefined : fadeInUp}
                   className="relative bg-white p-8 rounded-2xl shadow-lg text-center"
                 >
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">
@@ -402,7 +373,7 @@ export default function ResidencialLanding() {
               ))}
             </div>
 
-            <motion.div variants={fadeInUp} className="mt-16 bg-white p-8 rounded-2xl shadow-lg">
+            <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="mt-16 bg-white p-8 rounded-2xl shadow-lg">
               <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Opciones de Pago</h3>
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="text-center p-4 border border-gray-200 rounded-xl">
@@ -426,97 +397,28 @@ export default function ResidencialLanding() {
         </motion.section>
 
         {/* Testimonios */}
-        <motion.section
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
-          variants={staggerContainer}
-          className="py-20"
-        >
-          <div className="container mx-auto px-4">
-            <motion.div variants={fadeInUp} className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Lo que dicen nuestros clientes</h2>
-              <p className="text-xl text-gray-600">Testimonios reales de familias que ya viven su sueño</p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {testimonios.map((testimonio, index) => (
-                <motion.div key={index} variants={fadeInUp} className="bg-white p-6 rounded-2xl shadow-lg">
-                  <div className="flex mb-4">
-                    {[...Array(testimonio.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-gray-600 mb-4 italic">&ldquo;{testimonio.text}&rdquo;</p>
-                  <div>
-                    <p className="font-bold text-gray-800">{testimonio.name}</p>
-                    <p className="text-gray-500 text-sm">{testimonio.role}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.section>
+        <TestimoniosSection />
 
         {/* FAQ */}
-        <motion.section
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
-          variants={staggerContainer}
-          className="py-20 bg-gray-50"
-        >
-          <div className="container mx-auto px-4">
-            <motion.div variants={fadeInUp} className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Preguntas Frecuentes</h2>
-              <p className="text-xl text-gray-600">Resolvemos tus dudas más comunes</p>
-            </motion.div>
-
-            <motion.div variants={fadeInUp} className="max-w-3xl mx-auto">
-              {faqs.map((faq, index) => (
-                <div key={index} className="mb-4">
-                  <button
-                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                    className="w-full bg-white p-6 rounded-xl shadow-lg text-left flex justify-between items-center hover:shadow-xl transition-shadow"
-                  >
-                    <span className="font-semibold text-gray-800">{faq.q}</span>
-                    <ChevronDown
-                      className={`h-5 w-5 text-gray-500 transition-transform ${openFaq === index ? "rotate-180" : ""}`}
-                    />
-                  </button>
-                  {openFaq === index && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="bg-gray-100 p-6 rounded-b-xl"
-                    >
-                      <p className="text-gray-600">{faq.a}</p>
-                    </motion.div>
-                  )}
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </motion.section>
+        <FAQSection />
 
         {/* Contacto */}
         <motion.section
-          initial="initial"
-          whileInView="animate"
+          initial={prefersReducedMotion ? undefined : "initial"}
+          whileInView={prefersReducedMotion ? undefined : "animate"}
           viewport={{ once: true }}
-          variants={staggerContainer}
+          variants={prefersReducedMotion ? undefined : staggerContainer}
           id="contacto"
           className="py-20"
         >
           <div className="container mx-auto px-4">
-            <motion.div variants={fadeInUp} className="text-center mb-16">
+            <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">¿Listo para invertir en tu futuro?</h2>
               <p className="text-xl text-gray-600">Contáctanos y te ayudamos a encontrar el lote perfecto</p>
             </motion.div>
 
             <div className="grid lg:grid-cols-2 gap-12">
-              <motion.div variants={fadeInUp}>
+              <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
                 <form className="bg-white p-8 rounded-2xl shadow-lg">
                   <div className="grid md:grid-cols-2 gap-6 mb-6">
                     <input
@@ -550,7 +452,7 @@ export default function ResidencialLanding() {
                 </form>
               </motion.div>
 
-              <motion.div variants={fadeInUp} className="space-y-8">
+              <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="space-y-8">
                 <div className="flex items-start space-x-4">
                   <div className="bg-emerald-100 p-3 rounded-full">
                     <Phone className="h-6 w-6 text-emerald-600" />

@@ -15,21 +15,11 @@ import {
   Building2,
   Fuel,
 } from "lucide-react"
+import { fadeInUp, staggerContainer } from "@/lib/animations"
+import { useReducedMotion } from "@/hooks/useReducedMotion"
 
 export default function UbicacionPage() {
-  const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 },
-  }
-
-  const staggerContainer = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
+  const prefersReducedMotion = useReducedMotion()
 
   const nearbyPlaces = [
     {
@@ -119,9 +109,9 @@ export default function UbicacionPage() {
         ></div>
 
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 50 }}
+          animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          transition={prefersReducedMotion ? { duration: 0.01 } : { duration: 0.8 }}
           className="relative z-20 text-center text-white max-w-4xl mx-auto px-4"
         >
           <h1 className="text-5xl md:text-6xl font-bold mb-4">Ubicación Privilegiada</h1>
@@ -131,20 +121,19 @@ export default function UbicacionPage() {
 
       {/* Map Section */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-        variants={staggerContainer}
+        initial={prefersReducedMotion ? undefined : "initial"}
+        animate={prefersReducedMotion ? undefined : "animate"}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Encuentra Valle Sereno</h2>
             <p className="text-xl text-gray-600">Ubicado estratégicamente para ofrecerte la mejor calidad de vida</p>
           </motion.div>
 
           <motion.div
-            variants={fadeInUp}
+            variants={prefersReducedMotion ? undefined : fadeInUp}
             className="bg-gray-200 rounded-2xl h-96 flex items-center justify-center mb-8"
           >
             <div className="text-center">
@@ -153,7 +142,7 @@ export default function UbicacionPage() {
             </div>
           </motion.div>
 
-          <motion.div variants={fadeInUp} className="text-center">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center">
             <p className="text-lg text-gray-600 mb-4">
               <strong>Dirección:</strong> Km 15.5 Carretera a San Lucas, Valle Sereno
             </p>
@@ -164,14 +153,14 @@ export default function UbicacionPage() {
 
       {/* Nearby Places */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
-        variants={staggerContainer}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20 bg-gray-50"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Lugares de Interés Cercanos</h2>
             <p className="text-xl text-gray-600">Todo lo que necesitas está a pocos minutos de distancia</p>
           </motion.div>
@@ -180,8 +169,8 @@ export default function UbicacionPage() {
             {nearbyPlaces.map((place, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
-                whileHover={{ y: -5 }}
+                variants={prefersReducedMotion ? undefined : fadeInUp}
+                whileHover={prefersReducedMotion ? undefined : { y: -5 }}
                 className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <div className="flex items-start space-x-4">
@@ -211,14 +200,14 @@ export default function UbicacionPage() {
 
       {/* Advantages */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
-        variants={staggerContainer}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Ventajas de la Ubicación</h2>
             <p className="text-xl text-gray-600">Por qué Valle Sereno está en el lugar perfecto</p>
           </motion.div>
@@ -245,21 +234,21 @@ export default function UbicacionPage() {
 
       {/* Transport Options */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
-        variants={staggerContainer}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20 bg-gray-50"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Opciones de Transporte</h2>
             <p className="text-xl text-gray-600">Múltiples formas de llegar a tu destino</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {transportOptions.map((option, index) => (
-              <motion.div key={index} variants={fadeInUp} className="bg-white p-6 rounded-2xl shadow-lg text-center">
+              <motion.div key={index} variants={prefersReducedMotion ? undefined : fadeInUp} className="bg-white p-6 rounded-2xl shadow-lg text-center">
                 <div className="text-2xl font-bold text-emerald-600 mb-2">{option.time}</div>
                 <h3 className="font-bold text-gray-800 mb-2">{option.type}</h3>
                 <p className="text-gray-600 text-sm">{option.destination}</p>
@@ -271,21 +260,21 @@ export default function UbicacionPage() {
 
       {/* Contact CTA */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
-        variants={staggerContainer}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20 bg-emerald-600"
       >
         <div className="container mx-auto px-4 text-center">
-          <motion.div variants={fadeInUp}>
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
             <h2 className="text-4xl font-bold text-white mb-6">¿Quieres conocer la ubicación en persona?</h2>
             <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
               Agenda una visita guiada y descubre por ti mismo las ventajas de nuestra ubicación
             </p>
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
               className="bg-white text-emerald-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors"
             >
               Agendar Visita Guiada

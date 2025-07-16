@@ -3,6 +3,8 @@ import type React from "react"
 
 import { motion } from "framer-motion"
 import Layout from "../../components/layout"
+import { fadeInUp, staggerContainer } from "@/lib/animations"
+import { useReducedMotion } from "@/hooks/useReducedMotion"
 import {
   Phone,
   Mail,
@@ -27,20 +29,7 @@ export default function ContactoPage() {
     message: "",
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 },
-  }
-
-  const staggerContainer = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
+  const prefersReducedMotion = useReducedMotion()
 
   const contactInfo = [
     {
@@ -123,16 +112,15 @@ export default function ContactoPage() {
 
       {/* Contact Form & Info */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
+        initial={prefersReducedMotion ? undefined : "initial"}
+        animate={prefersReducedMotion ? undefined : "animate"}
         variants={staggerContainer}
         className="py-20"
       >
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16">
             {/* Contact Form */}
-            <motion.div variants={fadeInUp}>
+            <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
               <h2 className="text-3xl font-bold text-gray-800 mb-8">Envíanos un mensaje</h2>
 
               {isSubmitted ? (
@@ -231,7 +219,7 @@ export default function ContactoPage() {
             </motion.div>
 
             {/* Contact Information */}
-            <motion.div variants={fadeInUp}>
+            <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
               <h2 className="text-3xl font-bold text-gray-800 mb-8">Información de contacto</h2>
 
               <div className="space-y-6 mb-12">
@@ -289,19 +277,19 @@ export default function ContactoPage() {
 
       {/* Map Section */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20 bg-gray-50"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Visita Nuestra Oficina</h2>
             <p className="text-xl text-gray-600">Te esperamos en nuestras instalaciones</p>
           </motion.div>
 
-          <motion.div variants={fadeInUp} className="bg-gray-200 rounded-2xl h-96 flex items-center justify-center">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="bg-gray-200 rounded-2xl h-96 flex items-center justify-center">
             <div className="text-center">
               <MapPin className="h-16 w-16 text-emerald-600 mx-auto mb-4" />
               <p className="text-gray-600">Mapa de ubicación próximamente</p>
@@ -312,14 +300,14 @@ export default function ContactoPage() {
 
       {/* FAQ Quick Access */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">¿Tienes preguntas frecuentes?</h2>
             <p className="text-xl text-gray-600 mb-8">Revisa nuestras preguntas más comunes antes de contactarnos</p>
             <motion.button
@@ -335,14 +323,14 @@ export default function ContactoPage() {
 
       {/* Emergency Contact */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20 bg-emerald-600"
       >
         <div className="container mx-auto px-4 text-center">
-          <motion.div variants={fadeInUp}>
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
             <h2 className="text-4xl font-bold text-white mb-6">¿Necesitas atención inmediata?</h2>
             <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
               Nuestro equipo está disponible para atenderte por WhatsApp

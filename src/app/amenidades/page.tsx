@@ -1,6 +1,8 @@
-"use client"
+'use client'
 import { motion } from "framer-motion"
 import Layout from "../../components/layout"
+import { fadeInUp, staggerContainer } from "@/lib/animations"
+import { useReducedMotion } from "@/hooks/useReducedMotion"
 import {
   Shield,
   Trees,
@@ -21,19 +23,7 @@ import {
 } from "lucide-react"
 
 export default function AmenidadesPage() {
-  const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 },
-  }
-
-  const staggerContainer = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
+  const prefersReducedMotion = useReducedMotion()
 
   const mainAmenities = [
     {
@@ -142,14 +132,13 @@ export default function AmenidadesPage() {
 
       {/* Main Amenities */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
+        initial={prefersReducedMotion ? undefined : "initial"}
+        animate={prefersReducedMotion ? undefined : "animate"}
         variants={staggerContainer}
         className="py-20"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Amenidades Principales</h2>
             <p className="text-xl text-gray-600">Servicios diseñados para mejorar tu calidad de vida</p>
           </motion.div>
@@ -158,8 +147,8 @@ export default function AmenidadesPage() {
             {mainAmenities.map((amenity, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
-                whileHover={{ y: -5 }}
+                variants={prefersReducedMotion ? undefined : fadeInUp}
+                whileHover={prefersReducedMotion ? undefined : { y: -5 }}
                 className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300"
               >
                 <div className="flex items-start space-x-6">
@@ -187,14 +176,14 @@ export default function AmenidadesPage() {
 
       {/* Infrastructure Services */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20 bg-gray-50"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Servicios de Infraestructura</h2>
             <p className="text-xl text-gray-600">Servicios básicos de la más alta calidad</p>
           </motion.div>
@@ -203,8 +192,8 @@ export default function AmenidadesPage() {
             {infrastructureServices.map((service, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
-                whileHover={{ scale: 1.05 }}
+                variants={prefersReducedMotion ? undefined : fadeInUp}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                 className="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition-all duration-300"
               >
                 <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -220,14 +209,14 @@ export default function AmenidadesPage() {
 
       {/* Recreational Areas */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Áreas Recreativas</h2>
             <p className="text-xl text-gray-600">Espacios para el entretenimiento y la convivencia familiar</p>
           </motion.div>
@@ -248,14 +237,14 @@ export default function AmenidadesPage() {
 
       {/* Sustainability Features */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20 bg-gray-50"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Compromiso Ambiental</h2>
             <p className="text-xl text-gray-600">Desarrollo sostenible para las futuras generaciones</p>
           </motion.div>
@@ -264,7 +253,7 @@ export default function AmenidadesPage() {
             {sustainabilityFeatures.map((feature, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
+                variants={prefersReducedMotion ? undefined : fadeInUp}
                 className="flex items-start space-x-6 bg-white p-8 rounded-2xl shadow-lg"
               >
                 <div className="bg-emerald-100 p-4 rounded-full">
@@ -282,14 +271,14 @@ export default function AmenidadesPage() {
 
       {/* Gallery Preview */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Galería de Amenidades</h2>
             <p className="text-xl text-gray-600">Conoce nuestras instalaciones</p>
           </motion.div>
@@ -298,8 +287,8 @@ export default function AmenidadesPage() {
             {[1, 2, 3, 4, 5, 6].map((item, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
-                whileHover={{ scale: 1.05 }}
+                variants={prefersReducedMotion ? undefined : fadeInUp}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                 className="bg-gray-200 rounded-2xl h-64 flex items-center justify-center cursor-pointer hover:shadow-lg transition-all duration-300"
               >
                 <Camera className="h-12 w-12 text-gray-400" />
@@ -321,14 +310,14 @@ export default function AmenidadesPage() {
 
       {/* CTA Section */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
         variants={staggerContainer}
         className="py-20 bg-emerald-600"
       >
         <div className="container mx-auto px-4 text-center">
-          <motion.div variants={fadeInUp}>
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
             <h2 className="text-4xl font-bold text-white mb-6">¿Te gustan nuestras amenidades?</h2>
             <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
               Ven a conocer personalmente todas las comodidades que Valle Sereno tiene para ti

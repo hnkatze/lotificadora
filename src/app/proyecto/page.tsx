@@ -2,21 +2,11 @@
 import { motion } from "framer-motion"
 import Layout from "../../components/layout"
 import { Award, Users, Calendar, MapPin, Shield, Leaf, Building, TrendingUp } from "lucide-react"
+import { fadeInUp, staggerContainer } from "@/lib/animations"
+import { useReducedMotion } from "@/hooks/useReducedMotion"
 
 export default function ProyectoPage() {
-  const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 },
-  }
-
-  const staggerContainer = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
+  const prefersReducedMotion = useReducedMotion()
 
   const stats = [
     { number: "15", label: "Hectáreas", icon: MapPin },
@@ -68,9 +58,9 @@ export default function ProyectoPage() {
         ></div>
 
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 50 }}
+          animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          transition={prefersReducedMotion ? { duration: 0.01 } : { duration: 0.8 }}
           className="relative z-20 text-center text-white max-w-4xl mx-auto px-4"
         >
           <h1 className="text-5xl md:text-6xl font-bold mb-4">Nuestro Proyecto</h1>
@@ -80,16 +70,15 @@ export default function ProyectoPage() {
 
       {/* Stats Section */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-        variants={staggerContainer}
+        initial={prefersReducedMotion ? undefined : "initial"}
+        animate={prefersReducedMotion ? undefined : "animate"}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20 bg-gray-50"
       >
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
-              <motion.div key={index} variants={fadeInUp} className="text-center bg-white p-8 rounded-2xl shadow-lg">
+              <motion.div key={index} variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center bg-white p-8 rounded-2xl shadow-lg">
                 <stat.icon className="h-12 w-12 text-emerald-600 mx-auto mb-4" />
                 <div className="text-4xl font-bold text-gray-800 mb-2">{stat.number}</div>
                 <div className="text-gray-600">{stat.label}</div>
@@ -101,15 +90,15 @@ export default function ProyectoPage() {
 
       {/* Vision Section */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
-        variants={staggerContainer}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20"
       >
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div variants={fadeInUp}>
+            <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
               <h2 className="text-4xl font-bold text-gray-800 mb-6">Nuestra Visión</h2>
               <p className="text-lg text-gray-600 mb-6">
                 Valle Sereno nace de la visión de crear un espacio donde las familias puedan construir no solo su hogar,
@@ -121,15 +110,15 @@ export default function ProyectoPage() {
                 entorno seguro, sostenible y en constante crecimiento.
               </p>
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
                 className="bg-emerald-600 text-white px-8 py-3 rounded-full hover:bg-emerald-700 transition-colors"
               >
                 Conocer Más
               </motion.button>
             </motion.div>
 
-            <motion.div variants={fadeInUp}>
+            <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
               <div className="bg-gray-200 rounded-2xl h-96 flex items-center justify-center">
                 <Building className="h-24 w-24 text-emerald-600" />
               </div>
@@ -140,14 +129,14 @@ export default function ProyectoPage() {
 
       {/* Features Section */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
-        variants={staggerContainer}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20 bg-gray-50"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">¿Por qué elegir Valle Sereno?</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Características únicas que hacen de nuestro proyecto la mejor opción para tu inversión
@@ -158,8 +147,8 @@ export default function ProyectoPage() {
             {features.map((feature, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
-                whileHover={{ y: -5 }}
+                variants={prefersReducedMotion ? undefined : fadeInUp}
+                whileHover={prefersReducedMotion ? undefined : { y: -5 }}
                 className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <feature.icon className="h-12 w-12 text-emerald-600 mb-4" />
@@ -173,21 +162,21 @@ export default function ProyectoPage() {
 
       {/* Timeline Section */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
-        variants={staggerContainer}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20"
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Cronograma del Proyecto</h2>
             <p className="text-xl text-gray-600">Conoce las etapas de desarrollo de Valle Sereno</p>
           </motion.div>
 
           <div className="max-w-4xl mx-auto">
             {timeline.map((item, index) => (
-              <motion.div key={index} variants={fadeInUp} className="flex items-start mb-12 last:mb-0">
+              <motion.div key={index} variants={prefersReducedMotion ? undefined : fadeInUp} className="flex items-start mb-12 last:mb-0">
                 <div className="bg-emerald-600 text-white rounded-full w-16 h-16 flex items-center justify-center font-bold text-lg mr-6 flex-shrink-0">
                   {item.year}
                 </div>
@@ -203,10 +192,10 @@ export default function ProyectoPage() {
 
       {/* CTA Section */}
       <motion.section
-        initial="initial"
-        whileInView="animate"
+        initial={prefersReducedMotion ? undefined : "initial"}
+        whileInView={prefersReducedMotion ? undefined : "animate"}
         viewport={{ once: true }}
-        variants={staggerContainer}
+        variants={prefersReducedMotion ? undefined : staggerContainer}
         className="py-20 bg-emerald-600"
       >
         <div className="container mx-auto px-4 text-center">
@@ -217,15 +206,15 @@ export default function ProyectoPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
                 className="bg-white text-emerald-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors"
               >
                 Ver Lotes Disponibles
               </motion.button>
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
                 className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-emerald-600 transition-colors"
               >
                 Agendar Visita
