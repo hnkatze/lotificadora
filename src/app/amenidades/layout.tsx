@@ -1,11 +1,12 @@
 import type { Metadata } from "next"
+import { siteConfig } from "@/config/site-config"
 
 export const metadata: Metadata = {
-  title: "Amenidades - Valle Sereno",
-  description: "Descubre las amenidades premium de Valle Sereno: seguridad 24/7, áreas verdes, vías pavimentadas, servicios completos y más para tu comodidad.",
+  title: `${siteConfig.pages.amenities.hero.title} - ${siteConfig.general.siteName}`,
+  description: `${siteConfig.pages.amenities.hero.subtitle}. ${siteConfig.general.shortDescription}`,
   openGraph: {
-    title: "Amenidades Premium - Valle Sereno",
-    description: "Seguridad 24/7, parques, servicios completos y más",
+    title: `${siteConfig.pages.amenities.hero.title} - ${siteConfig.general.siteName}`,
+    description: siteConfig.pages.amenities.hero.subtitle,
     type: "website",
   },
 }

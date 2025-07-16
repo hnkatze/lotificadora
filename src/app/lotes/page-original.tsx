@@ -1,51 +1,75 @@
 'use client'
 import { motion } from "framer-motion"
 import Layout from "../../components/layout"
-import { CheckCircle } from "lucide-react"
-import { useState, useMemo } from "react"
+import { CheckCircle, TreePine, Shield, Zap, Droplets } from "lucide-react"
+import { useState } from "react"
 import { fadeInUp, staggerContainer } from "@/lib/animations"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
-import OptimizedImage from "@/components/OptimizedImage"
-import { siteConfig } from "@/config/site-config"
 
 export default function LotesPage() {
   const [selectedLote, setSelectedLote] = useState("250")
   const [paymentPlan, setPaymentPlan] = useState("financiado")
   const prefersReducedMotion = useReducedMotion()
-  
-  const { lots: lotesConfig } = siteConfig.pages
-  const { lots, paymentPlans } = siteConfig
+
+  const lotes = [
+    {
+      id: "250",
+      size: "250",
+      price: 45000,
+      location: "Frente a parque",
+      features: ["Topografía plana", "Servicios incluidos", "Escrituración rápida", "Vista al parque"],
+      available: 25,
+      popular: false,
+    },
+    {
+      id: "350",
+      size: "350",
+      price: 62000,
+      location: "Esquina arbolada",
+      features: ["Vista panorámica", "Doble frente", "Zona premium", "Árboles nativos"],
+      available: 18,
+      popular: true,
+    },
+    {
+      id: "500",
+      size: "500+",
+      price: 90000,
+      location: "Zona premium",
+      features: ["Máxima privacidad", "Terreno irregular", "Exclusividad total", "Diseño personalizado"],
+      available: 8,
+      popular: false,
+    },
+  ]
+
+  const includedServices = [
+    { icon: Zap, name: "Energía eléctrica", desc: "Instalación subterránea" },
+    { icon: Droplets, name: "Agua potable", desc: "Red municipal certificada" },
+    { icon: Shield, name: "Seguridad", desc: "Vigilancia 24/7" },
+    { icon: TreePine, name: "Áreas verdes", desc: "Mantenimiento incluido" },
+  ]
 
   const calculatePayment = (price: number, plan: string) => {
-    const selectedPlan = paymentPlans.find(p => p.id === plan)
-    if (plan === "contado" && selectedPlan?.discount) {
-      return price * (1 - selectedPlan.discount / 100)
-    } else if (plan === "financiado" && selectedPlan?.months) {
-      return price / selectedPlan.months
+    if (plan === "contado") {
+      return price * 0.95 // 5% descuento
+    } else if (plan === "financiado") {
+      return price / 60 // 60 meses
     }
     return price
   }
 
-  const selectedLoteData = useMemo(
-    () => lots.find((lote) => lote.id === selectedLote),
-    [selectedLote, lots]
-  )
+  const selectedLoteData = lotes.find((lote) => lote.id === selectedLote)
 
   return (
     <Layout>
       {/* Hero Section */}
       <section className="relative h-96 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/80 to-emerald-700/60 z-10"></div>
-        <div className="absolute inset-0">
-          <OptimizedImage
-            src={lotesConfig.hero.backgroundImage.src}
-            alt={lotesConfig.hero.backgroundImage.alt}
-            fill
-            priority
-            className="object-cover"
-            sizes="100vw"
-          />
-        </div>
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: "url(/placeholder.svg?height=600&width=1920)",
+          }}
+        ></div>
 
         <motion.div
           initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 50 }}
@@ -53,8 +77,8 @@ export default function LotesPage() {
           transition={prefersReducedMotion ? { duration: 0.01 } : { duration: 0.8 }}
           className="relative z-20 text-center text-white max-w-4xl mx-auto px-4"
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">{lotesConfig.hero.title}</h1>
-          <p className="text-xl text-gray-200">{lotesConfig.hero.subtitle}</p>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">Lotes Disponibles</h1>
+          <p className="text-xl text-gray-200">Encuentra el lote perfecto para construir el hogar de tus sueños</p>
         </motion.div>
       </section>
 
@@ -72,7 +96,7 @@ export default function LotesPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            {lots.map((lote, index) => (
+            {lotes.map((lote, index) => (
               <motion.div
                 key={index}
                 variants={prefersReducedMotion ? undefined : fadeInUp}
@@ -147,8 +171,8 @@ export default function LotesPage() {
       >
         <div className="container mx-auto px-4">
           <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6">{lotesConfig.calculator.title}</h2>
-            <p className="text-xl text-gray-600">{lotesConfig.calculator.subtitle}</p>
+            <h2 className="text-4xl font-bold text-gray-800 mb-6">Calculadora de Pagos</h2>
+            <p className="text-xl text-gray-600">Descubre cuánto pagarías según tu plan preferido</p>
           </motion.div>
 
           <motion.div variants={prefersReducedMotion ? undefined : fadeInUp} className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8">
@@ -160,7 +184,7 @@ export default function LotesPage() {
                   <div>
                     <label className="block text-gray-700 font-semibold mb-3">Tamaño del lote:</label>
                     <div className="grid grid-cols-3 gap-2">
-                      {lots.map((lote) => (
+                      {lotes.map((lote) => (
                         <button
                           key={lote.id}
                           onClick={() => setSelectedLote(lote.id)}
@@ -179,20 +203,28 @@ export default function LotesPage() {
                   <div>
                     <label className="block text-gray-700 font-semibold mb-3">Plan de pago:</label>
                     <div className="space-y-2">
-                      {paymentPlans.map((plan) => (
-                        <button
-                          key={plan.id}
-                          onClick={() => setPaymentPlan(plan.id)}
-                          className={`w-full p-4 rounded-lg border-2 text-left transition-colors ${
-                            paymentPlan === plan.id
-                              ? "border-emerald-600 bg-emerald-50"
-                              : "border-gray-300 hover:border-emerald-300"
-                          }`}
-                        >
-                          <div className="font-semibold">{plan.name}</div>
-                          <div className="text-sm text-gray-600">{plan.description}</div>
-                        </button>
-                      ))}
+                      <button
+                        onClick={() => setPaymentPlan("contado")}
+                        className={`w-full p-4 rounded-lg border-2 text-left transition-colors ${
+                          paymentPlan === "contado"
+                            ? "border-emerald-600 bg-emerald-50"
+                            : "border-gray-300 hover:border-emerald-300"
+                        }`}
+                      >
+                        <div className="font-semibold">Pago de contado</div>
+                        <div className="text-sm text-gray-600">5% de descuento</div>
+                      </button>
+                      <button
+                        onClick={() => setPaymentPlan("financiado")}
+                        className={`w-full p-4 rounded-lg border-2 text-left transition-colors ${
+                          paymentPlan === "financiado"
+                            ? "border-emerald-600 bg-emerald-50"
+                            : "border-gray-300 hover:border-emerald-300"
+                        }`}
+                      >
+                        <div className="font-semibold">Financiamiento directo</div>
+                        <div className="text-sm text-gray-600">Hasta 60 meses sin intereses</div>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -213,16 +245,14 @@ export default function LotesPage() {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Plan de pago:</span>
-                        <span className="font-semibold">
-                          {paymentPlans.find(p => p.id === paymentPlan)?.name}
-                        </span>
+                        <span className="font-semibold capitalize">{paymentPlan}</span>
                       </div>
                       <hr className="border-gray-300" />
                       {paymentPlan === "contado" ? (
                         <div className="flex justify-between text-lg">
                           <span className="font-bold text-gray-800">Total a pagar:</span>
                           <span className="font-bold text-emerald-600">
-                            ${Math.round(calculatePayment(selectedLoteData.price, paymentPlan)).toLocaleString()}
+                            ${calculatePayment(selectedLoteData.price, paymentPlan).toLocaleString()}
                           </span>
                         </div>
                       ) : (
@@ -271,17 +301,13 @@ export default function LotesPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {lotesConfig.includedServices.map((service, index) => (
-              <motion.div 
-                key={index} 
-                variants={prefersReducedMotion ? undefined : fadeInUp} 
-                className="text-center bg-white p-6 rounded-2xl shadow-lg"
-              >
+            {includedServices.map((service, index) => (
+              <motion.div key={index} variants={prefersReducedMotion ? undefined : fadeInUp} className="text-center bg-white p-6 rounded-2xl shadow-lg">
                 <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   <service.icon className="h-8 w-8 text-emerald-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{service.title}</h3>
-                <p className="text-gray-600">{service.description}</p>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">{service.name}</h3>
+                <p className="text-gray-600">{service.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -298,9 +324,9 @@ export default function LotesPage() {
       >
         <div className="container mx-auto px-4 text-center">
           <motion.div variants={prefersReducedMotion ? undefined : fadeInUp}>
-            <h2 className="text-4xl font-bold text-white mb-6">{lotesConfig.cta.title}</h2>
+            <h2 className="text-4xl font-bold text-white mb-6">¿Encontraste tu lote ideal?</h2>
             <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
-              {lotesConfig.cta.subtitle}
+              No esperes más, los mejores lotes se agotan rápido. Reserva el tuyo hoy mismo.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button

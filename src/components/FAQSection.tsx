@@ -4,28 +4,11 @@ import { motion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 import { useState } from "react"
 import { fadeInUp, staggerContainer } from "@/lib/animations"
-
-const faqs = [
-  {
-    q: "¿Cuánto tiempo toma la escrituración?",
-    a: "El proceso de escrituración toma entre 30 a 45 días hábiles una vez completado el pago.",
-  },
-  {
-    q: "¿Puedo construir cualquier estilo de casa?",
-    a: "Sí, respetando las normas de construcción y el reglamento interno del residencial.",
-  },
-  { 
-    q: "¿Hay restricciones de altura?", 
-    a: "La altura máxima permitida es de 3 niveles o 12 metros de altura." 
-  },
-  {
-    q: "¿Incluyen estudios topográficos?",
-    a: "Sí, todos los lotes incluyen levantamiento topográfico y certificado de linderos.",
-  },
-]
+import { siteConfig } from "@/config/site-config"
 
 export default function FAQSection() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const { faqs } = siteConfig
 
   return (
     <motion.section
@@ -50,7 +33,7 @@ export default function FAQSection() {
                 aria-expanded={openFaq === index}
                 aria-controls={`faq-answer-${index}`}
               >
-                <span className="font-semibold text-gray-800">{faq.q}</span>
+                <span className="font-semibold text-gray-800">{faq.question}</span>
                 <ChevronDown
                   className={`h-5 w-5 text-gray-500 transition-transform ${openFaq === index ? "rotate-180" : ""}`}
                 />
@@ -63,7 +46,7 @@ export default function FAQSection() {
                   exit={{ opacity: 0, height: 0 }}
                   className="bg-gray-100 p-6 rounded-b-xl"
                 >
-                  <p className="text-gray-600">{faq.a}</p>
+                  <p className="text-gray-600">{faq.answer}</p>
                 </motion.div>
               )}
             </div>

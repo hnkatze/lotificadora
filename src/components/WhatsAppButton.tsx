@@ -3,10 +3,11 @@
 import { MessageCircle } from "lucide-react"
 import { motion } from "framer-motion"
 import { memo } from "react"
+import { siteConfig } from "@/config/site-config"
 
 const WhatsAppButton = memo(function WhatsAppButton() {
-  const phoneNumber = "50412345678" // Replace with actual number
-  const message = "Hola, me interesa obtener m\u00e1s informaci\u00f3n sobre los lotes en Valle Sereno"
+  const phoneNumber = siteConfig.contact.whatsapp
+  const message = `Hola, me interesa obtener m\u00e1s informaci\u00f3n sobre los lotes en ${siteConfig.general.siteName}`
   
   const handleClick = () => {
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`

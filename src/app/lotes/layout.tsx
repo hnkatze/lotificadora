@@ -1,11 +1,12 @@
 import type { Metadata } from "next"
+import { siteConfig } from "@/config/site-config"
 
 export const metadata: Metadata = {
-  title: "Lotes Disponibles - Valle Sereno",
-  description: "Lotes residenciales desde 250m² hasta 500m² con excelente ubicación, servicios completos y financiamiento disponible. ¡Invierte en tu patrimonio!",
+  title: `${siteConfig.pages.lots.hero.title} - ${siteConfig.general.siteName}`,
+  description: `${siteConfig.pages.lots.hero.subtitle}. ${siteConfig.general.shortDescription}`,
   openGraph: {
-    title: "Lotes desde 250m² - Valle Sereno",
-    description: "Encuentra el lote perfecto para construir tu hogar",
+    title: `${siteConfig.pages.lots.hero.title} - ${siteConfig.general.siteName}`,
+    description: siteConfig.pages.lots.hero.subtitle,
     type: "website",
   },
 }

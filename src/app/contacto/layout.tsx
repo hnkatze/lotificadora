@@ -1,11 +1,12 @@
 import type { Metadata } from "next"
+import { siteConfig } from "@/config/site-config"
 
 export const metadata: Metadata = {
-  title: "Contacto - Valle Sereno",
-  description: "Contáctanos para más información sobre los lotes residenciales en Valle Sereno. Atención personalizada, visitas guiadas y asesoría completa.",
+  title: `${siteConfig.pages.contact.hero.title} - ${siteConfig.general.siteName}`,
+  description: `${siteConfig.pages.contact.hero.subtitle}. ${siteConfig.general.shortDescription}`,
   openGraph: {
-    title: "Contacto - Valle Sereno",
-    description: "Agenda tu visita y conoce tu futuro hogar",
+    title: `${siteConfig.pages.contact.hero.title} - ${siteConfig.general.siteName}`,
+    description: siteConfig.pages.contact.hero.subtitle,
     type: "website",
   },
 }

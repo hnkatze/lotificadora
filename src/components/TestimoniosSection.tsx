@@ -3,29 +3,11 @@
 import { motion } from "framer-motion"
 import { Star } from "lucide-react"
 import { fadeInUp, staggerContainer } from "@/lib/animations"
-
-const testimonios = [
-  {
-    name: "Roberto Martínez",
-    role: "Ingeniero",
-    text: "Compré mi lote en 2023 y ya incrementó 30% su valor. La mejor inversión para mi familia.",
-    rating: 5,
-  },
-  {
-    name: "Ana García",
-    role: "Arquitecta",
-    text: "La ubicación es perfecta, cerca de todo pero con la tranquilidad que buscaba para mis hijos.",
-    rating: 5,
-  },
-  {
-    name: "Carlos López",
-    role: "Empresario",
-    text: "El proceso de compra fue transparente y rápido. Excelente atención al cliente.",
-    rating: 5,
-  },
-]
+import { siteConfig } from "@/config/site-config"
 
 export default function TestimoniosSection() {
+  const { testimonials } = siteConfig
+
   return (
     <motion.section
       initial="initial"
@@ -41,7 +23,7 @@ export default function TestimoniosSection() {
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {testimonios.map((testimonio, index) => (
+          {testimonials.map((testimonio, index) => (
             <motion.div key={index} variants={fadeInUp} className="bg-white p-6 rounded-2xl shadow-lg">
               <div className="flex mb-4">
                 {[...Array(testimonio.rating)].map((_, i) => (

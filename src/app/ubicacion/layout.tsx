@@ -1,11 +1,12 @@
 import type { Metadata } from "next"
+import { siteConfig } from "@/config/site-config"
 
 export const metadata: Metadata = {
-  title: "Ubicación - Valle Sereno",
-  description: "Ubicación estratégica de Valle Sereno: a 10 minutos del centro urbano, cerca de escuelas, hospitales y centros comerciales. Fácil acceso vial.",
+  title: `${siteConfig.pages.location.hero.title} - ${siteConfig.general.siteName}`,
+  description: `${siteConfig.pages.location.hero.subtitle}. ${siteConfig.general.shortDescription}`,
   openGraph: {
-    title: "Ubicación Estratégica - Valle Sereno",
-    description: "Conectividad y naturaleza en perfecto equilibrio",
+    title: `${siteConfig.pages.location.hero.title} - ${siteConfig.general.siteName}`,
+    description: siteConfig.pages.location.hero.subtitle,
     type: "website",
   },
 }

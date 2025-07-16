@@ -7,6 +7,7 @@ import { Home, MessageCircle, Menu, X } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
+import { siteConfig } from "@/config/site-config"
 
 const WhatsAppButton = dynamic(() => import("./WhatsAppButton"), {
   ssr: false,
@@ -79,7 +80,7 @@ export default function Layout({ children }: LayoutProps) {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 z-50 relative">
             <Home className="h-8 w-8 text-emerald-600" />
-            <span className="text-2xl font-bold text-gray-800">Valle Sereno</span>
+            <span className="text-2xl font-bold text-gray-800">{siteConfig.general.siteName}</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -178,9 +179,9 @@ export default function Layout({ children }: LayoutProps) {
                       <div>
                         <div className="flex items-center space-x-2">
                           <Home className="h-6 w-6 text-emerald-600" />
-                          <span className="text-xl font-bold text-gray-800">Valle Sereno</span>
+                          <span className="text-xl font-bold text-gray-800">{siteConfig.general.siteName}</span>
                         </div>
-                        <p className="text-gray-600 text-sm mt-2">Tu futuro comienza aquí</p>
+                        <p className="text-gray-600 text-sm mt-2">{siteConfig.general.tagline}</p>
                       </div>
                       <button
                         onClick={closeMenu}
@@ -251,7 +252,7 @@ export default function Layout({ children }: LayoutProps) {
                       <p className="text-gray-600 text-sm mb-3">¿Necesitas ayuda inmediata?</p>
                       <button 
                         onClick={() => {
-                          const url = `https://wa.me/50412345678?text=${encodeURIComponent("Hola, me interesa obtener más información sobre los lotes en Valle Sereno")}`
+                          const url = `https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent("Hola, me interesa obtener más información sobre los lotes en " + siteConfig.general.siteName)}`
                           window.open(url, '_blank', 'noopener,noreferrer')
                           closeMenu()
                         }}
@@ -277,9 +278,9 @@ export default function Layout({ children }: LayoutProps) {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Home className="h-8 w-8 text-emerald-400" />
-                <span className="text-2xl font-bold">Valle Sereno</span>
+                <span className="text-2xl font-bold">{siteConfig.general.siteName}</span>
               </div>
-              <p className="text-gray-400">Tu futuro comienza aquí</p>
+              <p className="text-gray-400">{siteConfig.general.tagline}</p>
             </div>
 
             <div>
@@ -306,9 +307,9 @@ export default function Layout({ children }: LayoutProps) {
             <div>
               <h4 className="text-lg font-semibold mb-4">Contacto</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>+502 1234-5678</li>
-                <li>info@vallesereno.com</li>
-                <li>Av. Principal #100</li>
+                <li>{siteConfig.contact.phone}</li>
+                <li>{siteConfig.contact.email}</li>
+                <li>{siteConfig.contact.address}</li>
               </ul>
             </div>
 
@@ -325,7 +326,7 @@ export default function Layout({ children }: LayoutProps) {
           </div>
 
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 Residencial Valle Sereno. Todos los derechos reservados.</p>
+            <p>&copy; {new Date().getFullYear()} {siteConfig.general.companyName}. Todos los derechos reservados.</p>
           </div>
         </div>
       </footer>

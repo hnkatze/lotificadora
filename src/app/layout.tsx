@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { siteConfig } from "@/config/site-config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,21 +14,21 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Valle Sereno - Lotes Residenciales Premium",
-  description: "Descubre Valle Sereno, el desarrollo residencial con lotes desde 250m², infraestructura de primer nivel, seguridad 24/7 y excelente ubicación. ¡Invierte en tu futuro hoy!",
-  keywords: "lotes residenciales, terrenos en venta, desarrollo inmobiliario, valle sereno, inversión inmobiliaria, lotes premium",
-  authors: [{ name: "Valle Sereno" }],
+  title: `${siteConfig.general.siteName} - ${siteConfig.general.tagline}`,
+  description: siteConfig.general.description,
+  keywords: siteConfig.general.keywords,
+  authors: [{ name: siteConfig.general.companyName }],
   openGraph: {
-    title: "Valle Sereno - Lotes Residenciales Premium",
-    description: "Lotes desde 250m² con infraestructura completa y seguridad 24/7",
+    title: `${siteConfig.general.siteName} - ${siteConfig.general.tagline}`,
+    description: siteConfig.general.shortDescription,
     type: "website",
     locale: "es_ES",
-    siteName: "Valle Sereno",
+    siteName: siteConfig.general.siteName,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Valle Sereno - Lotes Residenciales Premium",
-    description: "Lotes desde 250m² con infraestructura completa y seguridad 24/7",
+    title: `${siteConfig.general.siteName} - ${siteConfig.general.tagline}`,
+    description: siteConfig.general.shortDescription,
   },
   robots: {
     index: true,

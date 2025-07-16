@@ -1,11 +1,12 @@
 import type { Metadata } from "next"
+import { siteConfig } from "@/config/site-config"
 
 export const metadata: Metadata = {
-  title: "Proyecto - Valle Sereno",
-  description: "Conoce el proyecto Valle Sereno: desarrollo residencial moderno con visión sustentable, calidad de vida y crecimiento patrimonial garantizado.",
+  title: `${siteConfig.pages.project.hero.title} - ${siteConfig.general.siteName}`,
+  description: `${siteConfig.pages.project.hero.subtitle}. ${siteConfig.general.shortDescription}`,
   openGraph: {
-    title: "Conoce el Proyecto - Valle Sereno",
-    description: "Desarrollo residencial con visión de futuro",
+    title: `${siteConfig.pages.project.hero.title} - ${siteConfig.general.siteName}`,
+    description: siteConfig.pages.project.hero.subtitle,
     type: "website",
   },
 }
