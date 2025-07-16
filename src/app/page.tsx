@@ -25,7 +25,6 @@ import { useState } from "react"
 import Layout from "../components/layout"
 
 export default function ResidencialLanding() {
-  const [activeTab, setActiveTab] = useState("250")
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   const fadeInUp = {
@@ -448,7 +447,7 @@ export default function ResidencialLanding() {
                       <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                     ))}
                   </div>
-                  <p className="text-gray-600 mb-4 italic">"{testimonio.text}"</p>
+                  <p className="text-gray-600 mb-4 italic">&ldquo;{testimonio.text}&rdquo;</p>
                   <div>
                     <p className="font-bold text-gray-800">{testimonio.name}</p>
                     <p className="text-gray-500 text-sm">{testimonio.role}</p>
